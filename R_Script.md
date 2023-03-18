@@ -1,7 +1,10 @@
-R_Script.R
+Analysis of World Cup 2022
 ================
-hoang
-2023-03-17
+--- 
+title: "Analysis of World Cup 2022" 
+fig_width: 6 
+fig_height: 4 
+--- 
 
 ``` r
 library(tidyverse)
