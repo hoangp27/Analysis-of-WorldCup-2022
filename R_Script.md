@@ -1,11 +1,6 @@
 Analysis of World Cup 2022
 ================
 
-```{r, setup, include=FALSE}
-knitr::opts_chunk$set(
-  comment = '', fig.width = 10, fig.height = 10
-)
-```
 
 ``` r
 library(tidyverse)
