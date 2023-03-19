@@ -1,6 +1,7 @@
-Analysis of World Cup 2022
+R_Script.R
 ================
-
+hoang
+2023-03-18
 
 ``` r
 library(tidyverse)
@@ -21,7 +22,7 @@ WC_Events_uncleaned <- read_csv("data/world_cups.csv",col_names= TRUE)
 ```
 
     ## Rows: 22 Columns: 9
-    ## ── Column specification ──────────────────────────────────────────────────────────────
+    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (5): Host Country, Winner, Runners-Up, Third, Fourth
     ## dbl (4): Year, Goals Scored, Qualified Teams, Matches Played
@@ -34,16 +35,15 @@ head(WC_Events_uncleaned)
 ```
 
     ## # A tibble: 6 × 9
-    ##    Year `Host Country` Winner     `Runners-Up`   Third  Fourth Goals…¹ Quali…² Match…³
-    ##   <dbl> <chr>          <chr>      <chr>          <chr>  <chr>    <dbl>   <dbl>   <dbl>
-    ## 1  1930 Uruguay        Uruguay    Argentina      USA    Yugos…      70      13      18
-    ## 2  1934 Italy          Italy      Czechoslovakia Germa… Austr…      70      16      17
-    ## 3  1938 France         Italy      Hungary        Brazil Sweden      84      15      18
-    ## 4  1950 Brazil         Uruguay    Brazil         Sweden Spain       88      13      22
-    ## 5  1954 Switzerland    Germany FR Hungary        Austr… Urugu…     140      16      26
-    ## 6  1958 Sweden         Brazil     Sweden         France Germa…     126      16      35
-    ## # … with abbreviated variable names ¹​`Goals Scored`, ²​`Qualified Teams`,
-    ## #   ³​`Matches Played`
+    ##    Year `Host Country` Winner     `Runners-Up`   Third   Fourth     `Goals Scored` `Qualified Teams` Matches Play…¹
+    ##   <dbl> <chr>          <chr>      <chr>          <chr>   <chr>               <dbl>             <dbl>          <dbl>
+    ## 1  1930 Uruguay        Uruguay    Argentina      USA     Yugoslavia             70                13             18
+    ## 2  1934 Italy          Italy      Czechoslovakia Germany Austria                70                16             17
+    ## 3  1938 France         Italy      Hungary        Brazil  Sweden                 84                15             18
+    ## 4  1950 Brazil         Uruguay    Brazil         Sweden  Spain                  88                13             22
+    ## 5  1954 Switzerland    Germany FR Hungary        Austria Uruguay               140                16             26
+    ## 6  1958 Sweden         Brazil     Sweden         France  Germany FR            126                16             35
+    ## # … with abbreviated variable name ¹​`Matches Played`
 
 ``` r
 #remove white space between column name
@@ -64,7 +64,7 @@ WC_Matches2022 <- read_csv("data/2022_world_cup_matches.csv", col_names = TRUE)
 ```
 
     ## Rows: 64 Columns: 8
-    ## ── Column specification ──────────────────────────────────────────────────────────────
+    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (4): Stage, Home Team, Away Team, Win Condition
     ## dbl  (2): ID, Year
@@ -79,7 +79,7 @@ WC_MatchesB42022 <- read_csv("data/B42022_world_cup_matches.csv", col_names = TR
 ```
 
     ## Rows: 900 Columns: 10
-    ## ── Column specification ──────────────────────────────────────────────────────────────
+    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (4): Stage, Home Team, Away Team, Win Condition
     ## dbl  (4): ID, Year, Home Goals, Away Goals
@@ -94,15 +94,14 @@ head(WC_Matches2022)
 ```
 
     ## # A tibble: 6 × 8
-    ##      ID  Year Date       Stage       `Home Team`   `Away Team` `Win Condition` Host …¹
-    ##   <dbl> <dbl> <date>     <chr>       <chr>         <chr>       <chr>           <lgl>  
-    ## 1     1  2022 2022-11-20 Group stage Qatar         Ecuador     <NA>            TRUE   
-    ## 2     2  2022 2022-11-21 Group stage Senegal       Netherlands <NA>            FALSE  
-    ## 3     3  2022 2022-11-21 Group stage England       Iran        <NA>            FALSE  
-    ## 4     4  2022 2022-11-21 Group stage United States Wales       <NA>            FALSE  
-    ## 5     5  2022 2022-11-22 Group stage France        Australia   <NA>            FALSE  
-    ## 6     6  2022 2022-11-22 Group stage Denmark       Tunisia     <NA>            FALSE  
-    ## # … with abbreviated variable name ¹​`Host Team`
+    ##      ID  Year Date       Stage       `Home Team`   `Away Team` `Win Condition` `Host Team`
+    ##   <dbl> <dbl> <date>     <chr>       <chr>         <chr>       <chr>           <lgl>      
+    ## 1     1  2022 2022-11-20 Group stage Qatar         Ecuador     <NA>            TRUE       
+    ## 2     2  2022 2022-11-21 Group stage Senegal       Netherlands <NA>            FALSE      
+    ## 3     3  2022 2022-11-21 Group stage England       Iran        <NA>            FALSE      
+    ## 4     4  2022 2022-11-21 Group stage United States Wales       <NA>            FALSE      
+    ## 5     5  2022 2022-11-22 Group stage France        Australia   <NA>            FALSE      
+    ## 6     6  2022 2022-11-22 Group stage Denmark       Tunisia     <NA>            FALSE
 
 ``` r
 #Using the temp_data to join and retrieve the readable data
@@ -110,10 +109,10 @@ temp_data <- read_csv("data/Fifa_world_cup_matches.csv", col_names = TRUE)
 ```
 
     ## Rows: 64 Columns: 88
-    ## ── Column specification ──────────────────────────────────────────────────────────────
+    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
-    ## chr   (7): team1, team2, possession team1, possession team2, possession in contest...
-    ## dbl  (80): number of goals team1, number of goals team2, total attempts team1, tot...
+    ## chr   (7): team1, team2, possession team1, possession team2, possession in contest, date, category
+    ## dbl  (80): number of goals team1, number of goals team2, total attempts team1, total attempts team2, conceded t...
     ## time  (1): hour
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
@@ -135,16 +134,15 @@ head(WC_Matches2022)
 ```
 
     ## # A tibble: 6 × 10
-    ##      ID  Year Date       Stage       Home Te…¹ Away …² Win C…³ Host …⁴ numbe…⁵ numbe…⁶
-    ##   <dbl> <dbl> <date>     <chr>       <chr>     <chr>   <chr>   <lgl>     <dbl>   <dbl>
-    ## 1     1  2022 2022-11-20 Group stage Qatar     Ecuador <NA>    TRUE          0       2
-    ## 2     2  2022 2022-11-21 Group stage Senegal   Nether… <NA>    FALSE         0       2
-    ## 3     3  2022 2022-11-21 Group stage England   Iran    <NA>    FALSE         6       2
-    ## 4     4  2022 2022-11-21 Group stage United S… Wales   <NA>    FALSE         1       1
-    ## 5     5  2022 2022-11-22 Group stage France    Austra… <NA>    FALSE         4       1
-    ## 6     6  2022 2022-11-22 Group stage Denmark   Tunisia <NA>    FALSE         0       0
-    ## # … with abbreviated variable names ¹​`Home Team`, ²​`Away Team`, ³​`Win Condition`,
-    ## #   ⁴​`Host Team`, ⁵​`number of goals team1`, ⁶​`number of goals team2`
+    ##      ID  Year Date       Stage       `Home Team`   `Away Team` `Win Condition` `Host Team` number of goal…¹ numbe…²
+    ##   <dbl> <dbl> <date>     <chr>       <chr>         <chr>       <chr>           <lgl>                  <dbl>   <dbl>
+    ## 1     1  2022 2022-11-20 Group stage Qatar         Ecuador     <NA>            TRUE                       0       2
+    ## 2     2  2022 2022-11-21 Group stage Senegal       Netherlands <NA>            FALSE                      0       2
+    ## 3     3  2022 2022-11-21 Group stage England       Iran        <NA>            FALSE                      6       2
+    ## 4     4  2022 2022-11-21 Group stage United States Wales       <NA>            FALSE                      1       1
+    ## 5     5  2022 2022-11-22 Group stage France        Australia   <NA>            FALSE                      4       1
+    ## 6     6  2022 2022-11-22 Group stage Denmark       Tunisia     <NA>            FALSE                      0       0
+    ## # … with abbreviated variable names ¹​`number of goals team1`, ²​`number of goals team2`
 
 ``` r
 #renaming column and relocate column and changing column type for union - here we can join Home goals with numberofgoalteam 1 and Away Goals with numberofgoalteam2
@@ -164,16 +162,14 @@ head(WC_Matches)
 ```
 
     ## # A tibble: 6 × 10
-    ##      ID  Year Date       Stage       HomeTeam  HomeG…¹ AwayG…² AwayT…³ WinCo…⁴ HostT…⁵
-    ##   <dbl> <dbl> <date>     <chr>       <chr>       <dbl>   <dbl> <chr>   <chr>   <lgl>  
-    ## 1     1  1930 1930-07-13 Group stage France          4       1 Mexico  <NA>    FALSE  
-    ## 2     2  1930 1930-07-13 Group stage United S…       3       0 Belgium <NA>    FALSE  
-    ## 3     3  1930 1930-07-14 Group stage Yugoslav…       2       1 Brazil  <NA>    FALSE  
-    ## 4     4  1930 1930-07-14 Group stage Romania         3       1 Peru    <NA>    FALSE  
-    ## 5     5  1930 1930-07-15 Group stage Argentina       1       0 France  <NA>    FALSE  
-    ## 6     6  1930 1930-07-16 Group stage Chile           3       0 Mexico  <NA>    FALSE  
-    ## # … with abbreviated variable names ¹​HomeGoals, ²​AwayGoals, ³​AwayTeam, ⁴​WinCondition,
-    ## #   ⁵​HostTeam
+    ##      ID  Year Date       Stage       HomeTeam      HomeGoals AwayGoals AwayTeam WinCondition HostTeam
+    ##   <dbl> <dbl> <date>     <chr>       <chr>             <dbl>     <dbl> <chr>    <chr>        <lgl>   
+    ## 1     1  1930 1930-07-13 Group stage France                4         1 Mexico   <NA>         FALSE   
+    ## 2     2  1930 1930-07-13 Group stage United States         3         0 Belgium  <NA>         FALSE   
+    ## 3     3  1930 1930-07-14 Group stage Yugoslavia            2         1 Brazil   <NA>         FALSE   
+    ## 4     4  1930 1930-07-14 Group stage Romania               3         1 Peru     <NA>         FALSE   
+    ## 5     5  1930 1930-07-15 Group stage Argentina             1         0 France   <NA>         FALSE   
+    ## 6     6  1930 1930-07-16 Group stage Chile                 3         0 Mexico   <NA>         FALSE
 
 ``` r
 #3 International Matches - same logic
@@ -182,7 +178,7 @@ International_Matches <- read_csv("data/International_Matches.csv", col_names = 
 ```
 
     ## Rows: 17769 Columns: 9
-    ## ── Column specification ──────────────────────────────────────────────────────────────
+    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (4): Tournament, Home Team, Away Team, Win Conditions
     ## dbl  (3): ID, Home Goals, Away Goals
@@ -199,15 +195,14 @@ head(International_Matches)
 ```
 
     ## # A tibble: 6 × 9
-    ##      ID Tournament Date       HomeTeam HomeGoals AwayGoals AwayTeam WinCondi…¹ HomeS…²
-    ##   <dbl> <chr>      <date>     <chr>        <dbl>     <dbl> <chr>    <chr>      <lgl>  
-    ## 1     1 Friendly   1872-11-30 Scotland         0         0 England  <NA>       TRUE   
-    ## 2     2 Friendly   1873-03-08 England          4         2 Scotland <NA>       TRUE   
-    ## 3     3 Friendly   1874-03-07 Scotland         2         1 England  <NA>       TRUE   
-    ## 4     4 Friendly   1875-03-06 England          2         2 Scotland <NA>       TRUE   
-    ## 5     5 Friendly   1876-03-04 Scotland         3         0 England  <NA>       TRUE   
-    ## 6     6 Friendly   1876-03-25 Scotland         4         0 Wales    <NA>       TRUE   
-    ## # … with abbreviated variable names ¹​WinConditions, ²​HomeStadium
+    ##      ID Tournament Date       HomeTeam HomeGoals AwayGoals AwayTeam WinConditions HomeStadium
+    ##   <dbl> <chr>      <date>     <chr>        <dbl>     <dbl> <chr>    <chr>         <lgl>      
+    ## 1     1 Friendly   1872-11-30 Scotland         0         0 England  <NA>          TRUE       
+    ## 2     2 Friendly   1873-03-08 England          4         2 Scotland <NA>          TRUE       
+    ## 3     3 Friendly   1874-03-07 Scotland         2         1 England  <NA>          TRUE       
+    ## 4     4 Friendly   1875-03-06 England          2         2 Scotland <NA>          TRUE       
+    ## 5     5 Friendly   1876-03-04 Scotland         3         0 England  <NA>          TRUE       
+    ## 6     6 Friendly   1876-03-25 Scotland         4         0 Wales    <NA>          TRUE
 
 ``` r
 #4 World cup Squads and Group
@@ -216,7 +211,7 @@ WC_Groups <- read_csv("data/2022_world_cup_groups.csv", col_names = TRUE)
 ```
 
     ## Rows: 32 Columns: 4
-    ## ── Column specification ──────────────────────────────────────────────────────────────
+    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (3): Group, Team, Final_Standing
     ## dbl (1): FIFA Ranking
@@ -252,16 +247,14 @@ head(Host_Country_Matches)
 ```
 
     ## # A tibble: 6 × 10
-    ##      ID  Year Date       Stage         HomeT…¹ HomeG…² AwayG…³ AwayT…⁴ WinCo…⁵ HostT…⁶
-    ##   <dbl> <dbl> <date>     <chr>         <chr>     <dbl>   <dbl> <chr>   <chr>   <lgl>  
-    ## 1     9  1930 1930-07-18 Group stage   Uruguay       1       0 Peru    <NA>    TRUE   
-    ## 2    14  1930 1930-07-21 Group stage   Uruguay       4       0 Romania <NA>    TRUE   
-    ## 3    17  1930 1930-07-27 Semi-finals   Uruguay       6       1 Yugosl… <NA>    TRUE   
-    ## 4    18  1930 1930-07-30 Final         Uruguay       4       2 Argent… <NA>    TRUE   
-    ## 5    25  1934 1934-05-27 Round of 16   Italy         7       1 United… <NA>    TRUE   
-    ## 6    29  1934 1934-05-31 Quarter-fina… Italy         1       1 Spain   <NA>    TRUE   
-    ## # … with abbreviated variable names ¹​HomeTeam, ²​HomeGoals, ³​AwayGoals, ⁴​AwayTeam,
-    ## #   ⁵​WinCondition, ⁶​HostTeam
+    ##      ID  Year Date       Stage          HomeTeam HomeGoals AwayGoals AwayTeam      WinCondition HostTeam
+    ##   <dbl> <dbl> <date>     <chr>          <chr>        <dbl>     <dbl> <chr>         <chr>        <lgl>   
+    ## 1     9  1930 1930-07-18 Group stage    Uruguay          1         0 Peru          <NA>         TRUE    
+    ## 2    14  1930 1930-07-21 Group stage    Uruguay          4         0 Romania       <NA>         TRUE    
+    ## 3    17  1930 1930-07-27 Semi-finals    Uruguay          6         1 Yugoslavia    <NA>         TRUE    
+    ## 4    18  1930 1930-07-30 Final          Uruguay          4         2 Argentina     <NA>         TRUE    
+    ## 5    25  1934 1934-05-27 Round of 16    Italy            7         1 United States <NA>         TRUE    
+    ## 6    29  1934 1934-05-31 Quarter-finals Italy            1         1 Spain         <NA>         TRUE
 
 ``` r
 #We use this data to find the furthest round that the host country make to
@@ -273,16 +266,14 @@ head(Host_Country_Best_Stage)
 
     ## # A tibble: 6 × 10
     ## # Groups:   Year [6]
-    ##      ID  Year Date       Stage         HomeT…¹ HomeG…² AwayG…³ AwayT…⁴ WinCo…⁵ HostT…⁶
-    ##   <dbl> <dbl> <date>     <chr>         <chr>     <dbl>   <dbl> <chr>   <chr>   <lgl>  
-    ## 1    18  1930 1930-07-30 Final         Uruguay       4       2 Argent… <NA>    TRUE   
-    ## 2    35  1934 1934-06-10 Final         Italy         2       1 Czecho… Extra … TRUE   
-    ## 3    48  1938 1938-06-12 Quarter-fina… France        1       3 Italy   <NA>    TRUE   
-    ## 4    75  1950 1950-07-16 Final round   Uruguay       2       1 Brazil  <NA>    TRUE   
-    ## 5    95  1954 1954-06-26 Quarter-fina… Switze…       5       7 Austria <NA>    TRUE   
-    ## 6   136  1958 1958-06-29 Final         Sweden        2       5 Brazil  <NA>    TRUE   
-    ## # … with abbreviated variable names ¹​HomeTeam, ²​HomeGoals, ³​AwayGoals, ⁴​AwayTeam,
-    ## #   ⁵​WinCondition, ⁶​HostTeam
+    ##      ID  Year Date       Stage          HomeTeam    HomeGoals AwayGoals AwayTeam       WinCondition HostTeam
+    ##   <dbl> <dbl> <date>     <chr>          <chr>           <dbl>     <dbl> <chr>          <chr>        <lgl>   
+    ## 1    18  1930 1930-07-30 Final          Uruguay             4         2 Argentina      <NA>         TRUE    
+    ## 2    35  1934 1934-06-10 Final          Italy               2         1 Czechoslovakia Extra time   TRUE    
+    ## 3    48  1938 1938-06-12 Quarter-finals France              1         3 Italy          <NA>         TRUE    
+    ## 4    75  1950 1950-07-16 Final round    Uruguay             2         1 Brazil         <NA>         TRUE    
+    ## 5    95  1954 1954-06-26 Quarter-finals Switzerland         5         7 Austria        <NA>         TRUE    
+    ## 6   136  1958 1958-06-29 Final          Sweden              2         5 Brazil         <NA>         TRUE
 
 ``` r
 Host_Country_Best_Stage$Stage <- fct_recode(Host_Country_Best_Stage$Stage, "Final Round" ="Final", "Group Stage" = "Final round", "Group Stage" = "Second group stage", "Group Stage"="Group stage", "Quarter-final Round" = "Quarter-finals", "Round of 16" = "Round of 16", "Third-Fourth Round"= "Third place")
@@ -589,7 +580,11 @@ Total_Goal_Scored <- WC_Matches_Transformed %>%
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         axis.line = element_line(colour = "black"))
+```
 
+    ## Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as of ggplot2 3.3.4.
+
+``` r
 Total_Goal_Conceded <- WC_Matches_Transformed %>%
   group_by(Country) %>%
   summarize(Total_Goals_Scored = sum(ifelse(Home_Away == "HomeTeam", HomeGoals, AwayGoals)),
