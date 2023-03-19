@@ -42,3 +42,12 @@ The following datasets is being used:
 |   -- R_Script.r                                   R Analysis File                            |
 |   -- R_Script.md                                  Markdown File for display in Github        |
 |   -- README.md                                    Project Overview                           |
+
+
+|   This is my box with some text inside.   |
+|-------------------------------------------|
+| Lorem ipsum dolor sit amet, consectetur   |
+| adipiscing elit. Sed non risus. Suspendisse|
+| lectus tortor, dignissim sit amet,         |
+| adipiscing nec, ultricies sed, dolor.      |
+
