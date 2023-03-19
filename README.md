@@ -53,4 +53,21 @@ The following datasets is being used:
 
 <div>
 
+  my-project
+├── README.md
+├── data
+│   ├── input.csv
+│   ├── output.csv
+│   └── temp.csv
+├── figures
+│   ├── chart.png
+│   └── plot.pdf
+├── scripts
+│   ├── data-cleaning.R
+│   ├── data-visualization.R
+│   ├── model-building.R
+│   └── report-generation.R
+└── my-project.Rproj
+
+3 directories, 10 files
 
