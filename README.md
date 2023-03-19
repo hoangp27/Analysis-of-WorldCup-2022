@@ -27,3 +27,18 @@ The following datasets is being used:
 
 4. World Cup Groups
 - *2022_world_cup_groups.csv*: WC 2022 participants along with their group and final standing
+
+
+#Directory
+
+| -        
+|   -- data                                         Includes all datasets used for the project
+|     --- World_cup.csv                                 
+|     --- 2022_world_matches.csv
+|     --- world_cup_matches.csv                               
+|     --- Fifa_world_cup_matches.csv
+|     --- International_Matches.csv
+|     --- 2022_world_cup_groups.csv                    
+|   -- R_Script.r                                   R Analysis File
+|   -- R_Script.md                                  Markdown File for display in Github
+|   -- README.md                                    Project Overview
