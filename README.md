@@ -31,7 +31,7 @@ The following datasets is being used:
 
 # Directory
 
-| -        
+| ---------------------------------------------------------------------------------------------|        
 |   -- data                                         Includes all datasets used for the project |
 |     --- World_cup.csv                                                                        |
 |     --- 2022_world_matches.csv                                                               |
