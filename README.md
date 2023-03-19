@@ -53,7 +53,7 @@ The following datasets is being used:
 
 <div>
 
-  my-project
+  
 ├── README.md
 ├── data
 │   ├── input.csv
@@ -69,5 +69,5 @@ The following datasets is being used:
 │   └── report-generation.R
 └── my-project.Rproj
 
-3 directories, 10 files
+
 
