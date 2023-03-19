@@ -32,11 +32,11 @@ The following datasets is being used:
 # Directory
 
 | ---------------------------------------------------------------------------------------------|        
-|   -- data                                         Includes all datasets used for the project |
-|     --- World_cup.csv                                                                        |
-|     --- 2022_world_matches.csv                                                               |
-|     --- world_cup_matches.csv                                                                |
-|     --- Fifa_world_cup_matches.csv                                                           | 
+|   -- data                                         Includes all datasets used for the project|
+|     --- World_cup.csv|
+|     --- 2022_world_matches.csv|
+|     --- world_cup_matches.csv|
+|     --- Fifa_world_cup_matches.csv| 
 |     --- International_Matches.csv                                                            |
 |     --- 2022_world_cup_groups.csv                                                            |
 |   -- R_Script.r                                   R Analysis File                            |
@@ -44,10 +44,5 @@ The following datasets is being used:
 |   -- README.md                                    Project Overview                           |
 
 
-|   This is my box with some text inside.   |
-|-------------------------------------------|
-| Lorem ipsum dolor sit amet, consectetur   |
-| adipiscing elit. Sed non risus. Suspendisse|
-| lectus tortor, dignissim sit amet,         |
-| adipiscing nec, ultricies sed, dolor.      |
+
 
