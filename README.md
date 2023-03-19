@@ -31,9 +31,17 @@ The following datasets is being used:
 
 # Directory
 
+.my-code-block {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+<div class ="my-code-block">
 | ---------------------------------------------------------------------------------------------|        
-|   -- data                                         Includes all datasets used for the project|
-|     --- World_cup.csv|
+|   -- data                                         Includes all datasets used for the project
+|--- World_cup.csv|
 |     --- 2022_world_matches.csv|
 |     --- world_cup_matches.csv|
 |     --- Fifa_world_cup_matches.csv| 
@@ -43,6 +51,6 @@ The following datasets is being used:
 |   -- R_Script.md                                  Markdown File for display in Github        |
 |   -- README.md                                    Project Overview                           |
 
-
+<div>
 
 
