@@ -29,7 +29,7 @@ The following datasets is being used:
 - *2022_world_cup_groups.csv*: WC 2022 participants along with their group and final standing
 
 
-#Directory
+# Directory
 
 | -        
 |   -- data                                         Includes all datasets used for the project
