@@ -5,7 +5,9 @@ library(ggrepel)
 
 getwd()
 
-#READING AND CLEANING DATA
+#GGPLOT Theme Setting
+
+#FIRST STEP: READING AND CLEANING DATA
 
 #1 WC Events, Date, Time, Location
 WC_Events_uncleaned <- read_csv("data/world_cups.csv",col_names= TRUE)
@@ -84,10 +86,13 @@ names(WC_Groups) <- gsub(" ", "",colnames(WC_Groups))
 
 head(WC_Groups)
 
-                                  
+#------------------------------------------------
+
 #Moving on to the analysis steps, some of the insights we looking to answer
 
-#1. Host Country Performance
+#------------------------------------------------
+
+#1. Host Country Performance:
 
 #Select the host country matches only
 Host_Country_Matches <- filter(WC_Matches, HostTeam == TRUE)
@@ -114,26 +119,35 @@ WC_Events_Host_Standing<- WC_Events %>%
       "Out Top 4")) %>% 
   filter(HostCountry== Country | HostFinalStanding =="Out Top 4") %>% select(-Country, -Standing) %>% distinct()
 
-View(WC_Events_Host_Standing)
+head(WC_Events_Host_Standing)
 
-Host_Country_Data <- WC_Events_Host_Standing %>% left_join(Host_Country_Best_Stage, by = "Year") 
+#In order to see host performance over time, create a numeric column that numerises the Host Final Standing in each WC
 
+Host_Country_Data <- WC_Events_Host_Standing %>% 
+  left_join(Host_Country_Best_Stage, by = "Year") 
 
-Host_Country_Data <- Host_Country_Data %>% mutate(HostFinalStandingDetailed = case_when(HostFinalStanding== "Out Top 4" ~ (case_match(as.character(Stage),"Quarter-finals" ~ "Top 8", "Round of 16" ~ "Top 16", "Final round"~ "Top 4", .default = "Group Stage")), .default = HostFinalStanding))
+Host_Country_Data <- Host_Country_Data %>% 
+  mutate(HostFinalStandingDetailed = case_when(HostFinalStanding== "Out Top 4" ~ (case_match(as.character(Stage),"Quarter-finals" ~ "Top 8", "Round of 16" ~ "Top 16", "Final round"~ "Top 4", .default = "Group Stage")), .default = HostFinalStanding))
                              
-
-Host_Country_Data <- Host_Country_Data %>% mutate(HostFinalStandingNumber = case_match(HostFinalStandingDetailed, "Winner"~ 6,"Runners-Up" ~ 5, "Third" ~ 4, "Fourth" ~ 3,"Top 8" ~ 2, "Top 16"~1, .default=0))
-
-
-ggplot(data = Host_Country_Data,mapping = aes( x = Year, y = HostFinalStandingNumber)) + geom_line(color = "red", size = 1, alpha = 0.5) + geom_text(aes(label = str_c(HostCountry,"\n", HostFinalStandingDetailed)), color = "black", vjust =0, size = 3) + theme(legend.position = "none") + ggtitle("Host Country Performance Over Time")  + scale_x_continuous(limits = c(1930, 2022), breaks = seq(1930,2022,4)) + theme(axis.title.y = element_blank(),axis.text.y = element_blank(), legend.position = "none")
+Host_Country_Data <- Host_Country_Data %>% 
+  mutate(HostFinalStandingNumber = case_match(HostFinalStandingDetailed, "Winner"~ 6,"Runners-Up" ~ 5, "Third" ~ 4, "Fourth" ~ 3,"Top 8" ~ 2, "Top 16"~1, .default=0))
 
 
+#Let's graph the host country performance overtime
+Host_Country_Performance_Chart <- ggplot(data = Host_Country_Data,mapping = aes( x = Year, y = HostFinalStandingNumber)) + geom_line(color = "red", size = 1, alpha = 0.5) + geom_text(aes(label = str_c(HostCountry,"\n", HostFinalStandingDetailed)), color = "black", vjust =0, size = 3) + theme(legend.position = "none") + ggtitle("Host Country Performance Over Time")  + scale_x_continuous(limits = c(1930, 2022), breaks = seq(1930,2022,4)) + theme(axis.title.y = element_blank(),axis.text.y = element_blank(), legend.position = "none")
+
+ggsave("charts/Host_Country_Performance_Overtime.png", plot = Host_Country_Performance_Chart, width = 8, height = 6, units = "in")
+
+Host_Country_Performance_Chart
+
+
+#Now Let's see how many times the host countries make it to each round in every WC
 Host_Data_Summary <- fct_count(Host_Country_Data$HostFinalStandingDetailed) %>% rename(Standing = "f", Times = "n")
 
 Host_Data_Summary$Standing <- fct_relevel (Host_Data_Summary$Standing,"Winner", "Runners-Up", "Third", "Fourth", "Top 8","Top 16", "Group Stage")
 
 
-ggplot(data = Host_Data_Summary, aes(x = Standing, y = Times)) + 
+Host_Country_Performance_Summarize <- ggplot(data = Host_Data_Summary, aes(x = Standing, y = Times)) + 
   geom_bar(stat = "identity", aes(fill = Times), color = "black") + 
   scale_fill_gradient(low = "grey", high = "red") + 
   ggtitle("Host Country Performance Summary") +
@@ -141,7 +155,11 @@ ggplot(data = Host_Data_Summary, aes(x = Standing, y = Times)) +
   geom_text(aes(label = Times), position = position_stack(vjust = 0.8), fontface = "bold") +
   guides(fill = "none")
 
+ggsave("charts/Host_Country_Performance_Summarize.png", plot = Host_Country_Performance_Summarize, width = 8, height = 6, units = "in")
 
+Host_Country_Performance_Summarize
+
+#Next let's look at the Average Goal Scored and Average Goal Concede by each Host Country
 
 Summarised_HostPerformance <- WC_Matches %>%
   filter(HostTeam==TRUE) %>%
@@ -157,8 +175,8 @@ Qatar_Average_Goal_Scored <- Summarised_QatarPerformance$Average_Goal_Scored
 Qatar_Average_Goal_Conceded <- Summarised_QatarPerformance$Average_Goal_Conceded
 
 
-# Chart with only Average Goal Scored
-ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Scored)) + 
+# Average Goal Scored Chart
+Average_Goal_Scored <- ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Scored)) + 
   geom_line(color = "red", size = 1, alpha = 0.5) +
   ggtitle("Host Country Average Goal Scored Per Match") +
   theme(axis.title.y = element_text(size = 12), axis.text.y = element_text(size = 10)) +
@@ -170,12 +188,16 @@ ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Scored)
              color = "red", linetype = "dashed") +
   scale_linetype_manual(values=c("dashed"), guide = "none") +
   geom_label(aes(x = max(Year), y = Qatar_Average_Goal_Scored, label = "Qatar"), 
-             color = "black", size = 5, vjust = 1, hjust = -0.1) +
+             color = "black", size = 4, vjust = 1, hjust = 0.2) +
   geom_text(aes(label = round(Average_Goal_Scored, 1)), nudge_y = 0.1, hjust = -0.2, size = 3.5) +
   theme(legend.position = "none")
 
+ggsave("charts/Average_Goal_Scored_byHost.png", plot = Average_Goal_Scored, width = 8, height = 6, units = "in")
+
+Average_Goal_Scored
+
 # Chart with only Average Goal Conceded
-ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Conceded)) + 
+Average_Goal_Conceded <- ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Conceded)) + 
   geom_line(color = "blue", size = 1, alpha = 0.5) +
   ggtitle("Host Country Average Goal Conceded Per Match") +
   theme(axis.title.y = element_text(size = 12), axis.text.y = element_text(size = 10)) +
@@ -187,27 +209,36 @@ ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Concede
              color = "blue", linetype = "dashed") +
   scale_linetype_manual(values=c("dashed"), guide = "none") +
   geom_label(aes(x = max(Year), y = Qatar_Average_Goal_Conceded, label = "Qatar"), 
-             color = "black", size = 5, vjust = 0.1, hjust = -0.1) +
+             color = "black", size = 4, vjust = 0.1, hjust = 0.2) +
   geom_text(aes(label = round(Average_Goal_Conceded, 1)), nudge_y = -0.1, hjust = -0.2, size = 3.5) +
   theme(legend.position = "none")
 
+ggsave("charts/Average_Goal_Conceded_byHost.png", plot = Average_Goal_Conceded, width = 8, height = 6, units = "in")
 
- #2 Based on recent form and historical dominance which countries underperformed and over performed
+Average_Goal_Conceded
 
-#Historical Dominance:
+#------------------------------------------
 
+#2 Based on recent form and historical dominance which countries under performed and over performed
+
+
+#Manipulate data to see historical dominance
+
+head(WC_Events)
 
 WC_dominance_summary <- WC_Events %>%
   group_by(HostCountry, Standing) %>%
   count() %>%
-  pivot_wider(names_from = Standing, values_from = n, values_fill = 0) %>%
+  pivot_wider(names_from = Standing, values_from = n, values_fill = 0) %>% #transform this column values into multiple columns that count the number of times in top 4
   rename(Winner = "Winner", `Runners-Up` = "Runners-Up", Third = "Third", Fourth = "Fourth")
-
 
 WC_dominance_summary <- WC_dominance_summary %>% mutate(Times_in_Top4 = rowSums(across(Winner:Fourth)))
 
+head(WC_dominance_summary)
 
-WC_dominance_summary %>%
+#Let's graph the country that dominate in WC and their achievement:
+
+WC_dominants <- WC_dominance_summary %>%
   pivot_longer(cols = -c(HostCountry,Times_in_Top4), names_to = "Place", values_to = "Sum") %>%
   mutate(Place = factor(Place, levels = c("Winner", "Runners-Up", "Third", "Fourth"))) %>%
   mutate(Country = fct_reorder(HostCountry, Sum, sum)) %>% 
@@ -221,26 +252,28 @@ WC_dominance_summary %>%
   theme_minimal() + 
   scale_y_continuous(limits = c(0, 12), breaks = seq(0,12,2))
 
+ggsave("charts/WC_dominants.png", plot = WC_dominants, width = 8, height = 6, units = "in")
 
-WC_Matches %>% filter(Year == 2022) %>% select (HomeTeam)
+WC_dominants
 
+#Moving on to each country recent competition form, we use the International Matches data
+
+head(International_Matches)
+
+
+#Data Transformation
 International_Matches_Transformed <- 
-  International_Matches %>% pivot_longer(cols = c(HomeTeam, AwayTeam), names_to = "Home_Away", values_to = "Country") %>%
-  mutate(Goal_Scored = ifelse (Home_Away == "HomeTeam", HomeGoals, AwayGoals)) %>%
-  filter( Country %in% (WC_Groups$Team))
+  International_Matches %>% pivot_longer(cols = c(HomeTeam, AwayTeam), names_to = "Home_Away", values_to = "Country") %>% #pivoting Home Team and Away Team to one column only
+  mutate(Goal_Scored = ifelse (Home_Away == "HomeTeam", HomeGoals, AwayGoals)) %>% #Cleaning columns with conditions
+  filter( Country %in% (WC_Groups$Team)) #keep countries in the WC team only
 
-
-
-#filter all the matches in world cup
-
-
+#Let's evaluate the recent form by keeping the only top 5 most recent matches for each country:
 International_Matches_Transformed_latest5 <- International_Matches_Transformed %>%
   arrange(Country, Date) %>%  # sort by Country and Date
   group_by(Country) %>%
   slice_tail(n = 5)  # keep only the last 5 matches for each Country
 
-
-
+#Based on the goal scored of home team and away team we can determine the result of the matches:
 International_Matches_Transformed_latest5 <- International_Matches_Transformed_latest5 %>%
     mutate(Result = case_when(
     Home_Away == "HomeTeam" & HomeGoals > AwayGoals ~ "Win",
@@ -250,7 +283,7 @@ International_Matches_Transformed_latest5 <- International_Matches_Transformed_l
     TRUE ~ "Draw"
   ))
 
-
+#Using that result we assigned 3 points to a win, 1 point to a draw and 0 point to a loss for a country, the sum of point will be used to determine the recent form of a WC participants
 International_Matches_Form <- International_Matches_Transformed_latest5 %>% select(Country, Result) %>% 
   mutate(Result_numeric = case_match(Result, "Win" ~ 3,  "Draw" ~ 1,  "Loss"  ~ 0)) %>%
   group_by(Country) %>%
@@ -258,30 +291,32 @@ International_Matches_Form <- International_Matches_Transformed_latest5 %>% sele
   mutate(Form_B4_WC = case_when(Total_point>10 ~ "A", Total_point <5 ~ "C", .default = "B"))%>%
   arrange(desc(Total_point))
 
-International_Matches_Form
+#Let's view the Match form data after all these steps so far
+head(International_Matches_Form)
 
-# create a ggplot object
 
-ggplot(data = International_Matches_Form, aes(x = Total_point, y = reorder(Country,Total_point), color = Form_B4_WC)) +
+WC_participants_recentform <-ggplot(data = International_Matches_Form, aes(x = Total_point, y = reorder(Country,Total_point), color = Form_B4_WC)) +
   geom_point(size = 4) +
   scale_color_manual(values = c("green", "blue", "red"), name = "Form_B4_WC") +
   labs(x = "Total Points", y = "Country", title = "Team Performance Summary Based on last 5 matches") +
   theme_bw() +
   scale_x_continuous(breaks = seq(0, 15, by = 2))
 
+ggsave("charts/WC_participants_recentform.png", plot = WC_participants_recentform, width = 8, height = 6, units = "in")
 
+WC_participants_recentform
+
+#Create a new tibble that join recent forms(numerical) to WC 2022 Countries
 WC2022_Performance <-WC_Groups %>% left_join(International_Matches_Form, by = c("Team" = "Country")) %>% 
   left_join(WC_dominance_summary, by = c("Team" = "HostCountry")) %>%
   replace_na(list(Times_in_Top4 = 0)) %>%
   arrange(Team) %>% 
-  mutate(Final_Standing_numeric = case_match(Final_Standing,"Winner" ~ 1, "Runners-Up"~2,"Third Place" ~ 3, "Fourth Place" ~ 4, "Top 8" ~ 5, "Top 16" ~ 6, .default = 7))
-
-
+  mutate(Final_Standing_numeric = case_match(Final_Standing,"Winner" ~ 1, "Runners-Up"~2,"Third Place" ~ 3, "Fourth Place" ~ 4, "Top 8" ~ 5, "Top 16" ~ 6, .default = 7)) # numerise the final standing of WC2022 participants to display on graph 
 
 WC2022_Performance$Final_Standing <- factor(WC2022_Performance$Final_Standing, levels = c("Group Stage", "Top 16", "Top 8", "Fourth Place", "Third Place", "Runners-Up", "Winner"))
 
 
-ggplot(data = WC2022_Performance, aes(x = Final_Standing, y = Times_in_Top4, label = Team)) +
+WC_participants_Standing_vsForm <-ggplot(data = WC2022_Performance, aes(x = Final_Standing, y = Times_in_Top4, label = Team)) +
   geom_point(size =2 , color = "black") +
   ggrepel::geom_text_repel(aes(color = Form_B4_WC), size = 4, show.legend = TRUE, max.overlaps = Inf, nudge_x = 0.2, nudge_y = 0.2) +
   scale_color_manual(values = c("green", "blue", "red"), name = "Form_B4_WC") +
@@ -289,16 +324,19 @@ ggplot(data = WC2022_Performance, aes(x = Final_Standing, y = Times_in_Top4, lab
   theme_bw() +
   scale_x_discrete(limits = c("Group Stage", "Top 16", "Top 8", "Fourth Place", "Third Place", "Runners-Up", "Winner"))
 
+ggsave("charts/WC_participants_Standing_vsForm.png", plot = WC_participants_Standing_vsForm, width = 8, height = 6, units = "in")
 
+WC_participants_Standing_vsForm
 
-#Argentina 2022 road to glory compare to France 2018
+#3 Argentina 2022 road to glory compare to France 2018
 
-
+#Let's filter for Argentina and Frances matches only
 WC_Matches_Transformed <- 
   WC_Matches %>% pivot_longer(cols = c(HomeTeam, AwayTeam), names_to = "Home_Away", values_to = "Country") %>%
   mutate(Goal_Scored = ifelse (Home_Away == "HomeTeam", HomeGoals, AwayGoals)) %>%
   filter((Country == "France" & Year == 2018) | (Country =="Argentina" & Year == 2022))
 
+#See above for transformation logic
 WC_Matches_Transformed <- WC_Matches_Transformed %>%
   mutate(Result = case_when(
     Home_Away == "HomeTeam" & HomeGoals > AwayGoals ~ "Win",
@@ -313,7 +351,7 @@ WC_Matches_Transformed <- WC_Matches_Transformed %>%
 
 
 # plot Year vs. Result_Numeric with Country as the grouping variable
-ggplot(WC_Matches_Transformed, aes(x = match_index, y = Result_numeric_streak, color = Country)) +
+Road_to_Glory <- ggplot(WC_Matches_Transformed, aes(x = match_index, y = Result_numeric_streak, color = Country)) +
   geom_line(size = 1) + geom_point(size =2) +
   geom_text(aes(label = paste(Result, ifelse(is.na(WinCondition),"",WinCondition), sep = "\n")), 
             hjust = -0.1, size = 3, show.legend = FALSE, color = "black")  +
@@ -325,7 +363,13 @@ ggplot(WC_Matches_Transformed, aes(x = match_index, y = Result_numeric_streak, c
   facet_wrap(~Country, ncol = 2) +
   theme(axis.text.y = element_blank())
 
-View(WC_Matches_Transformed)
+ggsave("charts/Road_to_Glory.png", plot = Road_to_Glory, width = 8, height = 6, units = "in")
+
+Road_to_Glory
+
+#Let's compare the number of Goal Scored and Conceded between the two Countries
+
+head(WC_Matches_Transformed)
 
 Total_Goal_Scored <- WC_Matches_Transformed %>%
   group_by(Country) %>%
@@ -345,6 +389,9 @@ Total_Goal_Scored <- WC_Matches_Transformed %>%
         panel.background = element_blank(),
         axis.line = element_line(colour = "black"))
 
+ggsave("charts/Total_Goal_Scored_FranceArgentina.png", plot = Total_Goal_Scored, width = 8, height = 6, units = "in")
+
+
 Total_Goal_Conceded <- WC_Matches_Transformed %>%
   group_by(Country) %>%
   summarize(Total_Goals_Scored = sum(ifelse(Home_Away == "HomeTeam", HomeGoals, AwayGoals)),
@@ -363,6 +410,7 @@ Total_Goal_Conceded <- WC_Matches_Transformed %>%
         panel.background = element_blank(),
         axis.line = element_line(colour = "black"))
 
+ggsave("charts/Total_Goal_Conceded_FranceArgentina.png", plot = Total_Goal_Conceded , width = 8, height = 6, units = "in")
 
 grid.arrange(Total_Goal_Scored + scale_y_continuous(limits = c(0, 20), expand = c(0, 0)), 
              Total_Goal_Conceded + scale_y_continuous(limits = c(0, 20), expand = c(0, 0)), 

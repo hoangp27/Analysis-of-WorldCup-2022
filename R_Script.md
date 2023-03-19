@@ -15,14 +15,16 @@ getwd()
     ## [1] "C:/Users/hoang/Documents/Data Related/Data Projects/World Cup/World+Cup"
 
 ``` r
-#READING AND CLEANING DATA
+#GGPLOT Theme Setting
+
+#FIRST STEP: READING AND CLEANING DATA
 
 #1 WC Events, Date, Time, Location
 WC_Events_uncleaned <- read_csv("data/world_cups.csv",col_names= TRUE)
 ```
 
     ## Rows: 22 Columns: 9
-    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (5): Host Country, Winner, Runners-Up, Third, Fourth
     ## dbl (4): Year, Goals Scored, Qualified Teams, Matches Played
@@ -35,15 +37,14 @@ head(WC_Events_uncleaned)
 ```
 
     ## # A tibble: 6 × 9
-    ##    Year `Host Country` Winner     `Runners-Up`   Third   Fourth     `Goals Scored` `Qualified Teams` Matches Play…¹
-    ##   <dbl> <chr>          <chr>      <chr>          <chr>   <chr>               <dbl>             <dbl>          <dbl>
-    ## 1  1930 Uruguay        Uruguay    Argentina      USA     Yugoslavia             70                13             18
-    ## 2  1934 Italy          Italy      Czechoslovakia Germany Austria                70                16             17
-    ## 3  1938 France         Italy      Hungary        Brazil  Sweden                 84                15             18
-    ## 4  1950 Brazil         Uruguay    Brazil         Sweden  Spain                  88                13             22
-    ## 5  1954 Switzerland    Germany FR Hungary        Austria Uruguay               140                16             26
-    ## 6  1958 Sweden         Brazil     Sweden         France  Germany FR            126                16             35
-    ## # … with abbreviated variable name ¹​`Matches Played`
+    ##    Year `Host Country` Winner     `Runners-Up`   Third   Fourth     `Goals Scored` `Qualified Teams` `Matches Played`
+    ##   <dbl> <chr>          <chr>      <chr>          <chr>   <chr>               <dbl>             <dbl>            <dbl>
+    ## 1  1930 Uruguay        Uruguay    Argentina      USA     Yugoslavia             70                13               18
+    ## 2  1934 Italy          Italy      Czechoslovakia Germany Austria                70                16               17
+    ## 3  1938 France         Italy      Hungary        Brazil  Sweden                 84                15               18
+    ## 4  1950 Brazil         Uruguay    Brazil         Sweden  Spain                  88                13               22
+    ## 5  1954 Switzerland    Germany FR Hungary        Austria Uruguay               140                16               26
+    ## 6  1958 Sweden         Brazil     Sweden         France  Germany FR            126                16               35
 
 ``` r
 #remove white space between column name
@@ -64,7 +65,7 @@ WC_Matches2022 <- read_csv("data/2022_world_cup_matches.csv", col_names = TRUE)
 ```
 
     ## Rows: 64 Columns: 8
-    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (4): Stage, Home Team, Away Team, Win Condition
     ## dbl  (2): ID, Year
@@ -79,7 +80,7 @@ WC_MatchesB42022 <- read_csv("data/B42022_world_cup_matches.csv", col_names = TR
 ```
 
     ## Rows: 900 Columns: 10
-    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (4): Stage, Home Team, Away Team, Win Condition
     ## dbl  (4): ID, Year, Home Goals, Away Goals
@@ -109,10 +110,10 @@ temp_data <- read_csv("data/Fifa_world_cup_matches.csv", col_names = TRUE)
 ```
 
     ## Rows: 64 Columns: 88
-    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr   (7): team1, team2, possession team1, possession team2, possession in contest, date, category
-    ## dbl  (80): number of goals team1, number of goals team2, total attempts team1, total attempts team2, conceded t...
+    ## dbl  (80): number of goals team1, number of goals team2, total attempts team1, total attempts team2, conceded team1, conceded team2, goal inside the penalty area team1, goal inside ...
     ## time  (1): hour
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
@@ -134,15 +135,14 @@ head(WC_Matches2022)
 ```
 
     ## # A tibble: 6 × 10
-    ##      ID  Year Date       Stage       `Home Team`   `Away Team` `Win Condition` `Host Team` number of goal…¹ numbe…²
-    ##   <dbl> <dbl> <date>     <chr>       <chr>         <chr>       <chr>           <lgl>                  <dbl>   <dbl>
-    ## 1     1  2022 2022-11-20 Group stage Qatar         Ecuador     <NA>            TRUE                       0       2
-    ## 2     2  2022 2022-11-21 Group stage Senegal       Netherlands <NA>            FALSE                      0       2
-    ## 3     3  2022 2022-11-21 Group stage England       Iran        <NA>            FALSE                      6       2
-    ## 4     4  2022 2022-11-21 Group stage United States Wales       <NA>            FALSE                      1       1
-    ## 5     5  2022 2022-11-22 Group stage France        Australia   <NA>            FALSE                      4       1
-    ## 6     6  2022 2022-11-22 Group stage Denmark       Tunisia     <NA>            FALSE                      0       0
-    ## # … with abbreviated variable names ¹​`number of goals team1`, ²​`number of goals team2`
+    ##      ID  Year Date       Stage       `Home Team`   `Away Team` `Win Condition` `Host Team` `number of goals team1` `number of goals team2`
+    ##   <dbl> <dbl> <date>     <chr>       <chr>         <chr>       <chr>           <lgl>                         <dbl>                   <dbl>
+    ## 1     1  2022 2022-11-20 Group stage Qatar         Ecuador     <NA>            TRUE                              0                       2
+    ## 2     2  2022 2022-11-21 Group stage Senegal       Netherlands <NA>            FALSE                             0                       2
+    ## 3     3  2022 2022-11-21 Group stage England       Iran        <NA>            FALSE                             6                       2
+    ## 4     4  2022 2022-11-21 Group stage United States Wales       <NA>            FALSE                             1                       1
+    ## 5     5  2022 2022-11-22 Group stage France        Australia   <NA>            FALSE                             4                       1
+    ## 6     6  2022 2022-11-22 Group stage Denmark       Tunisia     <NA>            FALSE                             0                       0
 
 ``` r
 #renaming column and relocate column and changing column type for union - here we can join Home goals with numberofgoalteam 1 and Away Goals with numberofgoalteam2
@@ -178,7 +178,7 @@ International_Matches <- read_csv("data/International_Matches.csv", col_names = 
 ```
 
     ## Rows: 17769 Columns: 9
-    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (4): Tournament, Home Team, Away Team, Win Conditions
     ## dbl  (3): ID, Home Goals, Away Goals
@@ -211,7 +211,7 @@ WC_Groups <- read_csv("data/2022_world_cup_groups.csv", col_names = TRUE)
 ```
 
     ## Rows: 32 Columns: 4
-    ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (3): Group, Team, Final_Standing
     ## dbl (1): FIFA Ranking
@@ -237,8 +237,10 @@ head(WC_Groups)
 
 ``` r
 #Moving on to the analysis steps, some of the insights we looking to answer
+```
 
-#1. Host Country Performance
+``` r
+#1. Host Country Performance:
 
 #Select the host country matches only
 Host_Country_Matches <- filter(WC_Matches, HostTeam == TRUE)
@@ -289,23 +291,45 @@ WC_Events_Host_Standing<- WC_Events %>%
       "Out Top 4")) %>% 
   filter(HostCountry== Country | HostFinalStanding =="Out Top 4") %>% select(-Country, -Standing) %>% distinct()
 
-View(WC_Events_Host_Standing)
-
-Host_Country_Data <- WC_Events_Host_Standing %>% left_join(Host_Country_Best_Stage, by = "Year") 
-
-
-Host_Country_Data <- Host_Country_Data %>% mutate(HostFinalStandingDetailed = case_when(HostFinalStanding== "Out Top 4" ~ (case_match(as.character(Stage),"Quarter-finals" ~ "Top 8", "Round of 16" ~ "Top 16", "Final round"~ "Top 4", .default = "Group Stage")), .default = HostFinalStanding))
-                             
-
-Host_Country_Data <- Host_Country_Data %>% mutate(HostFinalStandingNumber = case_match(HostFinalStandingDetailed, "Winner"~ 6,"Runners-Up" ~ 5, "Third" ~ 4, "Fourth" ~ 3,"Top 8" ~ 2, "Top 16"~1, .default=0))
-
-
-ggplot(data = Host_Country_Data,mapping = aes( x = Year, y = HostFinalStandingNumber)) + geom_line(color = "red", size = 1, alpha = 0.5) + geom_text(aes(label = str_c(HostCountry,"\n", HostFinalStandingDetailed)), color = "black", vjust =0, size = 3) + theme(legend.position = "none") + ggtitle("Host Country Performance Over Time")  + scale_x_continuous(limits = c(1930, 2022), breaks = seq(1930,2022,4)) + theme(axis.title.y = element_blank(),axis.text.y = element_blank(), legend.position = "none")
+head(WC_Events_Host_Standing)
 ```
 
-![](R_Script_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+    ## # A tibble: 6 × 6
+    ## # Groups:   Year [6]
+    ##    Year HostCountry GoalsScored QualifiedTeams MatchesPlayed HostFinalStanding
+    ##   <dbl> <chr>             <dbl>          <dbl>         <dbl> <chr>            
+    ## 1  1930 Uruguay              70             13            18 Winner           
+    ## 2  1934 Italy                70             16            17 Winner           
+    ## 3  1938 France               84             15            18 Out Top 4        
+    ## 4  1950 Brazil               88             13            22 Runners-Up       
+    ## 5  1954 Switzerland         140             16            26 Out Top 4        
+    ## 6  1958 Sweden              126             16            35 Runners-Up
 
 ``` r
+#In order to see host performance over time, create a numeric column that numerises the Host Final Standing in each WC
+
+Host_Country_Data <- WC_Events_Host_Standing %>% 
+  left_join(Host_Country_Best_Stage, by = "Year") 
+
+Host_Country_Data <- Host_Country_Data %>% 
+  mutate(HostFinalStandingDetailed = case_when(HostFinalStanding== "Out Top 4" ~ (case_match(as.character(Stage),"Quarter-finals" ~ "Top 8", "Round of 16" ~ "Top 16", "Final round"~ "Top 4", .default = "Group Stage")), .default = HostFinalStanding))
+                             
+Host_Country_Data <- Host_Country_Data %>% 
+  mutate(HostFinalStandingNumber = case_match(HostFinalStandingDetailed, "Winner"~ 6,"Runners-Up" ~ 5, "Third" ~ 4, "Fourth" ~ 3,"Top 8" ~ 2, "Top 16"~1, .default=0))
+
+
+#Let's graph the host country performance overtime
+Host_Country_Performance_Chart <- ggplot(data = Host_Country_Data,mapping = aes( x = Year, y = HostFinalStandingNumber)) + geom_line(color = "red", size = 1, alpha = 0.5) + geom_text(aes(label = str_c(HostCountry,"\n", HostFinalStandingDetailed)), color = "black", vjust =0, size = 3) + theme(legend.position = "none") + ggtitle("Host Country Performance Over Time")  + scale_x_continuous(limits = c(1930, 2022), breaks = seq(1930,2022,4)) + theme(axis.title.y = element_blank(),axis.text.y = element_blank(), legend.position = "none")
+
+ggsave("charts/Host_Country_Performance_Overtime.png", plot = Host_Country_Performance_Chart, width = 8, height = 6, units = "in")
+
+Host_Country_Performance_Chart
+```
+
+![](R_Script_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+#Now Let's see how many times the host countries make it to each round in every WC
 Host_Data_Summary <- fct_count(Host_Country_Data$HostFinalStandingDetailed) %>% rename(Standing = "f", Times = "n")
 
 Host_Data_Summary$Standing <- fct_relevel (Host_Data_Summary$Standing,"Winner", "Runners-Up", "Third", "Fourth", "Top 8","Top 16", "Group Stage")
@@ -314,18 +338,24 @@ Host_Data_Summary$Standing <- fct_relevel (Host_Data_Summary$Standing,"Winner", 
     ## Warning: 1 unknown level in `f`: Top 8
 
 ``` r
-ggplot(data = Host_Data_Summary, aes(x = Standing, y = Times)) + 
+Host_Country_Performance_Summarize <- ggplot(data = Host_Data_Summary, aes(x = Standing, y = Times)) + 
   geom_bar(stat = "identity", aes(fill = Times), color = "black") + 
   scale_fill_gradient(low = "grey", high = "red") + 
   ggtitle("Host Country Performance Summary") +
   xlab("") +
   geom_text(aes(label = Times), position = position_stack(vjust = 0.8), fontface = "bold") +
   guides(fill = "none")
+
+ggsave("charts/Host_Country_Performance_Summarize.png", plot = Host_Country_Performance_Summarize, width = 8, height = 6, units = "in")
+
+Host_Country_Performance_Summarize
 ```
 
-![](R_Script_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
+![](R_Script_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
 
 ``` r
+#Next let's look at the Average Goal Scored and Average Goal Concede by each Host Country
+
 Summarised_HostPerformance <- WC_Matches %>%
   filter(HostTeam==TRUE) %>%
   group_by(Year) %>%
@@ -340,8 +370,8 @@ Qatar_Average_Goal_Scored <- Summarised_QatarPerformance$Average_Goal_Scored
 Qatar_Average_Goal_Conceded <- Summarised_QatarPerformance$Average_Goal_Conceded
 
 
-# Chart with only Average Goal Scored
-ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Scored)) + 
+# Average Goal Scored Chart
+Average_Goal_Scored <- ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Scored)) + 
   geom_line(color = "red", size = 1, alpha = 0.5) +
   ggtitle("Host Country Average Goal Scored Per Match") +
   theme(axis.title.y = element_text(size = 12), axis.text.y = element_text(size = 10)) +
@@ -353,16 +383,20 @@ ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Scored)
              color = "red", linetype = "dashed") +
   scale_linetype_manual(values=c("dashed"), guide = "none") +
   geom_label(aes(x = max(Year), y = Qatar_Average_Goal_Scored, label = "Qatar"), 
-             color = "black", size = 5, vjust = 1, hjust = -0.1) +
+             color = "black", size = 4, vjust = 1, hjust = 0.2) +
   geom_text(aes(label = round(Average_Goal_Scored, 1)), nudge_y = 0.1, hjust = -0.2, size = 3.5) +
   theme(legend.position = "none")
+
+ggsave("charts/Average_Goal_Scored_byHost.png", plot = Average_Goal_Scored, width = 8, height = 6, units = "in")
+
+Average_Goal_Scored
 ```
 
-![](R_Script_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
+![](R_Script_files/figure-gfm/unnamed-chunk-3-3.png)<!-- -->
 
 ``` r
 # Chart with only Average Goal Conceded
-ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Conceded)) + 
+Average_Goal_Conceded <- ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Conceded)) + 
   geom_line(color = "blue", size = 1, alpha = 0.5) +
   ggtitle("Host Country Average Goal Conceded Per Match") +
   theme(axis.title.y = element_text(size = 12), axis.text.y = element_text(size = 10)) +
@@ -374,30 +408,63 @@ ggplot(data = Summarised_HostPerformance, aes(x = Year, y = Average_Goal_Concede
              color = "blue", linetype = "dashed") +
   scale_linetype_manual(values=c("dashed"), guide = "none") +
   geom_label(aes(x = max(Year), y = Qatar_Average_Goal_Conceded, label = "Qatar"), 
-             color = "black", size = 5, vjust = 0.1, hjust = -0.1) +
+             color = "black", size = 4, vjust = 0.1, hjust = 0.2) +
   geom_text(aes(label = round(Average_Goal_Conceded, 1)), nudge_y = -0.1, hjust = -0.2, size = 3.5) +
   theme(legend.position = "none")
+
+ggsave("charts/Average_Goal_Conceded_byHost.png", plot = Average_Goal_Conceded, width = 8, height = 6, units = "in")
+
+Average_Goal_Conceded
 ```
 
-![](R_Script_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
+![](R_Script_files/figure-gfm/unnamed-chunk-3-4.png)<!-- -->
 
 ``` r
- #2 Based on recent form and historical dominance which countries underperformed and over performed
-
-#Historical Dominance:
+#2 Based on recent form and historical dominance which countries under performed and over performed
 
 
+#Manipulate data to see historical dominance
+
+head(WC_Events)
+```
+
+    ## # A tibble: 6 × 7
+    ##    Year HostCountry GoalsScored QualifiedTeams MatchesPlayed Standing   Country       
+    ##   <dbl> <chr>             <dbl>          <dbl>         <dbl> <chr>      <chr>         
+    ## 1  1930 Uruguay              70             13            18 Winner     Uruguay       
+    ## 2  1930 Uruguay              70             13            18 Runners-Up Argentina     
+    ## 3  1930 Uruguay              70             13            18 Third      USA           
+    ## 4  1930 Uruguay              70             13            18 Fourth     Yugoslavia    
+    ## 5  1934 Italy                70             16            17 Winner     Italy         
+    ## 6  1934 Italy                70             16            17 Runners-Up Czechoslovakia
+
+``` r
 WC_dominance_summary <- WC_Events %>%
   group_by(HostCountry, Standing) %>%
   count() %>%
-  pivot_wider(names_from = Standing, values_from = n, values_fill = 0) %>%
+  pivot_wider(names_from = Standing, values_from = n, values_fill = 0) %>% #transform this column values into multiple columns that count the number of times in top 4
   rename(Winner = "Winner", `Runners-Up` = "Runners-Up", Third = "Third", Fourth = "Fourth")
-
 
 WC_dominance_summary <- WC_dominance_summary %>% mutate(Times_in_Top4 = rowSums(across(Winner:Fourth)))
 
+head(WC_dominance_summary)
+```
 
-WC_dominance_summary %>%
+    ## # A tibble: 6 × 6
+    ## # Groups:   HostCountry [6]
+    ##   HostCountry Fourth `Runners-Up` Third Winner Times_in_Top4
+    ##   <chr>        <int>        <int> <int>  <int>         <dbl>
+    ## 1 Argentina        1            1     1      1             4
+    ## 2 Brazil           2            2     2      2             8
+    ## 3 Chile            1            1     1      1             4
+    ## 4 England          1            1     1      1             4
+    ## 5 France           2            2     2      2             8
+    ## 6 Germany          2            2     2      2             8
+
+``` r
+#Let's graph the country that dominate in WC and their achievement:
+
+WC_dominants <- WC_dominance_summary %>%
   pivot_longer(cols = -c(HostCountry,Times_in_Top4), names_to = "Place", values_to = "Sum") %>%
   mutate(Place = factor(Place, levels = c("Winner", "Runners-Up", "Third", "Fourth"))) %>%
   mutate(Country = fct_reorder(HostCountry, Sum, sum)) %>% 
@@ -410,47 +477,44 @@ WC_dominance_summary %>%
   ggtitle("Top Performers in World Cup") +
   theme_minimal() + 
   scale_y_continuous(limits = c(0, 12), breaks = seq(0,12,2))
+
+ggsave("charts/WC_dominants.png", plot = WC_dominants, width = 8, height = 6, units = "in")
+
+WC_dominants
 ```
 
-![](R_Script_files/figure-gfm/unnamed-chunk-1-5.png)<!-- -->
+![](R_Script_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
-WC_Matches %>% filter(Year == 2022) %>% select (HomeTeam)
+#Moving on to each country recent competition form, we use the International Matches data
+
+head(International_Matches)
 ```
 
-    ## # A tibble: 64 × 1
-    ##    HomeTeam     
-    ##    <chr>        
-    ##  1 Qatar        
-    ##  2 Senegal      
-    ##  3 England      
-    ##  4 United States
-    ##  5 France       
-    ##  6 Denmark      
-    ##  7 Mexico       
-    ##  8 Argentina    
-    ##  9 Belgium      
-    ## 10 Spain        
-    ## # … with 54 more rows
+    ## # A tibble: 6 × 9
+    ##      ID Tournament Date       HomeTeam HomeGoals AwayGoals AwayTeam WinConditions HomeStadium
+    ##   <dbl> <chr>      <date>     <chr>        <dbl>     <dbl> <chr>    <chr>         <lgl>      
+    ## 1     1 Friendly   1872-11-30 Scotland         0         0 England  <NA>          TRUE       
+    ## 2     2 Friendly   1873-03-08 England          4         2 Scotland <NA>          TRUE       
+    ## 3     3 Friendly   1874-03-07 Scotland         2         1 England  <NA>          TRUE       
+    ## 4     4 Friendly   1875-03-06 England          2         2 Scotland <NA>          TRUE       
+    ## 5     5 Friendly   1876-03-04 Scotland         3         0 England  <NA>          TRUE       
+    ## 6     6 Friendly   1876-03-25 Scotland         4         0 Wales    <NA>          TRUE
 
 ``` r
+#Data Transformation
 International_Matches_Transformed <- 
-  International_Matches %>% pivot_longer(cols = c(HomeTeam, AwayTeam), names_to = "Home_Away", values_to = "Country") %>%
-  mutate(Goal_Scored = ifelse (Home_Away == "HomeTeam", HomeGoals, AwayGoals)) %>%
-  filter( Country %in% (WC_Groups$Team))
+  International_Matches %>% pivot_longer(cols = c(HomeTeam, AwayTeam), names_to = "Home_Away", values_to = "Country") %>% #pivoting Home Team and Away Team to one column only
+  mutate(Goal_Scored = ifelse (Home_Away == "HomeTeam", HomeGoals, AwayGoals)) %>% #Cleaning columns with conditions
+  filter( Country %in% (WC_Groups$Team)) #keep countries in the WC team only
 
-
-
-#filter all the matches in world cup
-
-
+#Let's evaluate the recent form by keeping the only top 5 most recent matches for each country:
 International_Matches_Transformed_latest5 <- International_Matches_Transformed %>%
   arrange(Country, Date) %>%  # sort by Country and Date
   group_by(Country) %>%
   slice_tail(n = 5)  # keep only the last 5 matches for each Country
 
-
-
+#Based on the goal scored of home team and away team we can determine the result of the matches:
 International_Matches_Transformed_latest5 <- International_Matches_Transformed_latest5 %>%
     mutate(Result = case_when(
     Home_Away == "HomeTeam" & HomeGoals > AwayGoals ~ "Win",
@@ -460,7 +524,7 @@ International_Matches_Transformed_latest5 <- International_Matches_Transformed_l
     TRUE ~ "Draw"
   ))
 
-
+#Using that result we assigned 3 points to a win, 1 point to a draw and 0 point to a loss for a country, the sum of point will be used to determine the recent form of a WC participants
 International_Matches_Form <- International_Matches_Transformed_latest5 %>% select(Country, Result) %>% 
   mutate(Result_numeric = case_match(Result, "Win" ~ 3,  "Draw" ~ 1,  "Loss"  ~ 0)) %>%
   group_by(Country) %>%
@@ -468,69 +532,71 @@ International_Matches_Form <- International_Matches_Transformed_latest5 %>% sele
   mutate(Form_B4_WC = case_when(Total_point>10 ~ "A", Total_point <5 ~ "C", .default = "B"))%>%
   arrange(desc(Total_point))
 
-International_Matches_Form
+#Let's view the Match form data after all these steps so far
+head(International_Matches_Form)
 ```
 
-    ## # A tibble: 32 × 3
-    ##    Country     Total_point Form_B4_WC
-    ##    <chr>             <dbl> <chr>     
-    ##  1 Brazil               15 A         
-    ##  2 Argentina            13 A         
-    ##  3 Croatia              13 A         
-    ##  4 Netherlands          13 A         
-    ##  5 Senegal              13 A         
-    ##  6 Serbia               13 A         
-    ##  7 South Korea          11 A         
-    ##  8 Australia            10 B         
-    ##  9 Belgium              10 B         
-    ## 10 Costa Rica           10 B         
-    ## # … with 22 more rows
+    ## # A tibble: 6 × 3
+    ##   Country     Total_point Form_B4_WC
+    ##   <chr>             <dbl> <chr>     
+    ## 1 Brazil               15 A         
+    ## 2 Argentina            13 A         
+    ## 3 Croatia              13 A         
+    ## 4 Netherlands          13 A         
+    ## 5 Senegal              13 A         
+    ## 6 Serbia               13 A
 
 ``` r
-# create a ggplot object
-
-ggplot(data = International_Matches_Form, aes(x = Total_point, y = reorder(Country,Total_point), color = Form_B4_WC)) +
+WC_participants_recentform <-ggplot(data = International_Matches_Form, aes(x = Total_point, y = reorder(Country,Total_point), color = Form_B4_WC)) +
   geom_point(size = 4) +
   scale_color_manual(values = c("green", "blue", "red"), name = "Form_B4_WC") +
   labs(x = "Total Points", y = "Country", title = "Team Performance Summary Based on last 5 matches") +
   theme_bw() +
   scale_x_continuous(breaks = seq(0, 15, by = 2))
+
+ggsave("charts/WC_participants_recentform.png", plot = WC_participants_recentform, width = 8, height = 6, units = "in")
+
+WC_participants_recentform
 ```
 
-![](R_Script_files/figure-gfm/unnamed-chunk-1-6.png)<!-- -->
+![](R_Script_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 ``` r
+#Create a new tibble that join recent forms(numerical) to WC 2022 Countries
 WC2022_Performance <-WC_Groups %>% left_join(International_Matches_Form, by = c("Team" = "Country")) %>% 
   left_join(WC_dominance_summary, by = c("Team" = "HostCountry")) %>%
   replace_na(list(Times_in_Top4 = 0)) %>%
   arrange(Team) %>% 
-  mutate(Final_Standing_numeric = case_match(Final_Standing,"Winner" ~ 1, "Runners-Up"~2,"Third Place" ~ 3, "Fourth Place" ~ 4, "Top 8" ~ 5, "Top 16" ~ 6, .default = 7))
-
-
+  mutate(Final_Standing_numeric = case_match(Final_Standing,"Winner" ~ 1, "Runners-Up"~2,"Third Place" ~ 3, "Fourth Place" ~ 4, "Top 8" ~ 5, "Top 16" ~ 6, .default = 7)) # numerise the final standing of WC2022 participants to display on graph 
 
 WC2022_Performance$Final_Standing <- factor(WC2022_Performance$Final_Standing, levels = c("Group Stage", "Top 16", "Top 8", "Fourth Place", "Third Place", "Runners-Up", "Winner"))
 
 
-ggplot(data = WC2022_Performance, aes(x = Final_Standing, y = Times_in_Top4, label = Team)) +
+WC_participants_Standing_vsForm <-ggplot(data = WC2022_Performance, aes(x = Final_Standing, y = Times_in_Top4, label = Team)) +
   geom_point(size =2 , color = "black") +
   ggrepel::geom_text_repel(aes(color = Form_B4_WC), size = 4, show.legend = TRUE, max.overlaps = Inf, nudge_x = 0.2, nudge_y = 0.2) +
   scale_color_manual(values = c("green", "blue", "red"), name = "Form_B4_WC") +
   labs(x = "Final Standing", y = "Times in Top 4", title = "Team Performance Summary Based on last 5 matches") +
   theme_bw() +
   scale_x_discrete(limits = c("Group Stage", "Top 16", "Top 8", "Fourth Place", "Third Place", "Runners-Up", "Winner"))
+
+ggsave("charts/WC_participants_Standing_vsForm.png", plot = WC_participants_Standing_vsForm, width = 8, height = 6, units = "in")
+
+WC_participants_Standing_vsForm
 ```
 
-![](R_Script_files/figure-gfm/unnamed-chunk-1-7.png)<!-- -->
+![](R_Script_files/figure-gfm/unnamed-chunk-4-3.png)<!-- -->
 
 ``` r
-#Argentina 2022 road to glory compare to France 2018
+#3 Argentina 2022 road to glory compare to France 2018
 
-
+#Let's filter for Argentina and Frances matches only
 WC_Matches_Transformed <- 
   WC_Matches %>% pivot_longer(cols = c(HomeTeam, AwayTeam), names_to = "Home_Away", values_to = "Country") %>%
   mutate(Goal_Scored = ifelse (Home_Away == "HomeTeam", HomeGoals, AwayGoals)) %>%
   filter((Country == "France" & Year == 2018) | (Country =="Argentina" & Year == 2022))
 
+#See above for transformation logic
 WC_Matches_Transformed <- WC_Matches_Transformed %>%
   mutate(Result = case_when(
     Home_Away == "HomeTeam" & HomeGoals > AwayGoals ~ "Win",
@@ -545,7 +611,7 @@ WC_Matches_Transformed <- WC_Matches_Transformed %>%
 
 
 # plot Year vs. Result_Numeric with Country as the grouping variable
-ggplot(WC_Matches_Transformed, aes(x = match_index, y = Result_numeric_streak, color = Country)) +
+Road_to_Glory <- ggplot(WC_Matches_Transformed, aes(x = match_index, y = Result_numeric_streak, color = Country)) +
   geom_line(size = 1) + geom_point(size =2) +
   geom_text(aes(label = paste(Result, ifelse(is.na(WinCondition),"",WinCondition), sep = "\n")), 
             hjust = -0.1, size = 3, show.legend = FALSE, color = "black")  +
@@ -556,13 +622,32 @@ ggplot(WC_Matches_Transformed, aes(x = match_index, y = Result_numeric_streak, c
   scale_color_manual(values = c("#75AADB", "darkblue")) +
   facet_wrap(~Country, ncol = 2) +
   theme(axis.text.y = element_blank())
+
+ggsave("charts/Road_to_Glory.png", plot = Road_to_Glory, width = 8, height = 6, units = "in")
+
+Road_to_Glory
 ```
 
-![](R_Script_files/figure-gfm/unnamed-chunk-1-8.png)<!-- -->
+![](R_Script_files/figure-gfm/unnamed-chunk-4-4.png)<!-- -->
 
 ``` r
-View(WC_Matches_Transformed)
+#Let's compare the number of Goal Scored and Conceded between the two Countries
 
+head(WC_Matches_Transformed)
+```
+
+    ## # A tibble: 6 × 14
+    ## # Groups:   Country [1]
+    ##      ID  Year Date       Stage          HomeGoals AwayGoals WinCondition                      HostTeam Home_Away Country   Goal_Scored Result Result_numeric_streak match_index
+    ##   <dbl> <dbl> <date>     <chr>              <dbl>     <dbl> <chr>                             <lgl>    <chr>     <chr>           <dbl> <chr>                  <dbl>       <int>
+    ## 1     8  2022 2022-11-22 Group stage            1         2 <NA>                              FALSE    HomeTeam  Argentina           1 Loss                      -1           1
+    ## 2    24  2022 2022-11-26 Group stage            2         0 <NA>                              FALSE    HomeTeam  Argentina           2 Win                        1           2
+    ## 3    39  2022 2022-11-30 Group stage            0         2 <NA>                              FALSE    AwayTeam  Argentina           2 Win                        1           3
+    ## 4    50  2022 2022-12-03 Round of 16            2         1 <NA>                              FALSE    HomeTeam  Argentina           2 Win                        1           4
+    ## 5    58  2022 2022-12-09 Quarter-finals         2         2 Argentina win on penalties (3 -4) FALSE    AwayTeam  Argentina           2 Draw                       0           5
+    ## 6    61  2022 2022-12-13 Semi-finals            3         0 <NA>                              FALSE    HomeTeam  Argentina           3 Win                        1           6
+
+``` r
 Total_Goal_Scored <- WC_Matches_Transformed %>%
   group_by(Country) %>%
   summarize(Total_Goals_Scored = sum(ifelse(Home_Away == "HomeTeam", HomeGoals, AwayGoals)),
@@ -580,11 +665,10 @@ Total_Goal_Scored <- WC_Matches_Transformed %>%
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         axis.line = element_line(colour = "black"))
-```
 
-    ## Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as of ggplot2 3.3.4.
+ggsave("charts/Total_Goal_Scored_FranceArgentina.png", plot = Total_Goal_Scored, width = 8, height = 6, units = "in")
 
-``` r
+
 Total_Goal_Conceded <- WC_Matches_Transformed %>%
   group_by(Country) %>%
   summarize(Total_Goals_Scored = sum(ifelse(Home_Away == "HomeTeam", HomeGoals, AwayGoals)),
@@ -603,13 +687,14 @@ Total_Goal_Conceded <- WC_Matches_Transformed %>%
         panel.background = element_blank(),
         axis.line = element_line(colour = "black"))
 
+ggsave("charts/Total_Goal_Conceded_FranceArgentina.png", plot = Total_Goal_Conceded , width = 8, height = 6, units = "in")
 
 grid.arrange(Total_Goal_Scored + scale_y_continuous(limits = c(0, 20), expand = c(0, 0)), 
              Total_Goal_Conceded + scale_y_continuous(limits = c(0, 20), expand = c(0, 0)), 
              ncol = 2, widths = c(4, 4), top = "Argentina vs France World Cup Stats")
 ```
 
-![](R_Script_files/figure-gfm/unnamed-chunk-1-9.png)<!-- -->
+![](R_Script_files/figure-gfm/unnamed-chunk-4-5.png)<!-- -->
 
 ``` r
 #rmarkdown::render("R_Script.R", "github_document")
