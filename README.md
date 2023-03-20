@@ -31,43 +31,13 @@ The following datasets is being used:
 
 # Directory
 
-.my-code-block {
-  background-color: #f8f8f8;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 16px;
-}
+The `Output/` directory contains the following files and directories:
 
-<div class ="my-code-block">
-| ---------------------------------------------------------------------------------------------|        
-|   -- data                                         Includes all datasets used for the project
-|--- World_cup.csv|
-|     --- 2022_world_matches.csv|
-|     --- world_cup_matches.csv|
-|     --- Fifa_world_cup_matches.csv| 
-|     --- International_Matches.csv                                                            |
-|     --- 2022_world_cup_groups.csv                                                            |
-|   -- R_Script.r                                   R Analysis File                            |
-|   -- R_Script.md                                  Markdown File for display in Github        |
-|   -- README.md                                    Project Overview                           |
-
-<div>
-
-  
-├── README.md
-├── data
-│   ├── input.csv
-│   ├── output.csv
-│   └── temp.csv
-├── figures
-│   ├── chart.png
-│   └── plot.pdf
-├── scripts
-│   ├── data-cleaning.R
-│   ├── data-visualization.R
-│   ├── model-building.R
-│   └── report-generation.R
-└── my-project.Rproj
-
+- `file1.txt`: This file contains the output data for the first task.
+- `file2.txt`: This file contains the output data for the second task.
+- `file3.txt`: This file contains the output data for the third task.
+- `subdirectory/`: This directory contains additional output files for the third task.
+  - `file4.txt`: This file contains additional data for the third task.
+  - `file5.txt`: This file contains additional data for the third task.
 
 
