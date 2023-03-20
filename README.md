@@ -8,7 +8,7 @@ This project provide an overall exploratory analysis of the World Cup 2022. Base
 2. Countries that overachieved and underperformed in WC2022 based on historical dominance and recent form
 3. Argentina path to glory compared to France's in WC2018
 
-Tools implemented: the whole analysis will be conducted in R, particularly the **tidyverse package including forcats, ggplot2, lubridate, etc.** and some other smaller analysis packages.
+Tools implemented: the whole analysis will be conducted in R, particularly the **tidyverse package including forcats, ggplot2, lubridate, etc.** and some other smaller analysis packages. The environment is **RStudio**.
 
 # Datasets:
 
