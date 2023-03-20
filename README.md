@@ -31,13 +31,20 @@ The following datasets is being used:
 
 # Directory
 
-The `Output/` directory contains the following files and directories:
+The directory contains the following files and directories:
 
-- `file1.txt`: This file contains the output data for the first task.
-- `file2.txt`: This file contains the output data for the second task.
-- `file3.txt`: This file contains the output data for the third task.
-- `subdirectory/`: This directory contains additional output files for the third task.
-  - `file4.txt`: This file contains additional data for the third task.
-  - `file5.txt`: This file contains additional data for the third task.
+- `README.MD`: Overview and Summary of the project
+- `R_Script.R`: R Code File
+- `R_Script.md`: Rendered R Script File to read in Github
+- 'R_Script_files`
+  - `figure-gfm`: containing graphs and charts of the whole projects
+- `data`: 
+  - `2022_world_cup_groups.csv`
+  - `2022_world_cup_matches.csv`
+  - `B42022_world_cup_matches.csv`
+  - `Fifa_world_cup_matches.csv`
+  - `international_matches.csv`
+  - `world_cups.csv`
+
 
 
